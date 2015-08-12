@@ -1,69 +1,62 @@
 /* rpn.c */
 #include <stdio.h>
-#include <stdlib.h>
 
 int main(void){
-  int countNum = 0, didMean = 0;
-  double num[100] = {0.0};
-  char c;
+	int i = 0, countNum = 0, countBuff = 0, didMean = 0;
+	double num[100] = {0.0};
+	char buff[100] = "";
 
-  while(1){
-    while((c = getchar()) != '\n'){
-      if(c == '!'){
-        return 0;
-      }
-      switch(c){
-        case '+':
-          if(countNum < 2){
-            break;
-          }
-          num[countNum] = num[countNum-2] + num[countNum-1];
-          //printf("%lf = %lf + %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
-          didMean = 1;
-          break;
-        case '-':
-          if(countNum < 2){
-            break;
-          }
-          num[countNum] = num[countNum-2] - num[countNum-1];
-          //printf("%lf = %lf - %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
-          didMean = 1;
-          break;
-        case '*':
-          if(countNum < 2){
-            break;
-          }
-          num[countNum] = num[countNum-2] * num[countNum-1];
-          //printf("%lf = %lf * %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
-          didMean = 1;
-          break;
-        case '/':
-          if(countNum < 2){
-            break;
-          }
-          num[countNum] = num[countNum-2] / num[countNum-1];
-          //printf("%lf = %lf / %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
-          didMean = 1;
-          break;
-        case ' ':
-          if(didMean){
-            countNum++;
-          }
-          didMean = 0;
-          break;
-        default:
-          if('0' <= c && c <= '9'){
-            num[countNum] = num[countNum] * 10.0 + atoi(&c);
-            //printf("%lf\n", num[countNum]);
-            didMean = 1;
-          }
-          else{
-            didMean = 0;
-          }
-          break;
-      }
-    }
-    printf("res: %lf\n", num[countNum]);
-    countNum++;
-  }
-}
+	while(1){
+		// get chars to buffer
+		countBuff = 0;
+		while((buff[countBuff] = getchar()) != ' ' && buff[countBuff] != '\n'){
+			countBuff++;
+		}
+		// calcurate buffer
+		for(i = 0; i < countBuff; i++){
+			// '!' means end
+			if(buff[i] == '!'){
+				return 0;
+			}
+			// read each char
+			switch(buff[i]){
+				case '+':
+					if(countNum < 2){
+						break;
+					}
+					num[countNum] = num[countNum-2] + num[countNum-1];
+					//printf("%lf = %lf + %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
+					break;
+				case '-':
+					if(countNum < 2){
+						break;
+					}
+					num[countNum] = num[countNum-2] - num[countNum-1];
+					//printf("%lf = %lf - %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
+					break;
+				case '*':
+					if(countNum < 2){
+						break;
+					}
+					num[countNum] = num[countNum-2] * num[countNum-1];
+					//printf("%lf = %lf * %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
+					break;
+				case '/':
+					if(countNum < 2){
+						break;
+					}
+					num[countNum] = num[countNum-2] / num[countNum-1];
+					//printf("%lf = %lf / %lf\n", num[countNum], num[countNum-2], num[countNum-1]);
+					break;
+				default:
+					if('0' <= buff[i] && buff[i] <= '9'){
+						num[countNum] = num[countNum] * 10.0 + ((buff[i]) - ('0'));
+						//printf("%lf\n", num[countNum]);
+					}
+					break;
+			}// end switch
+		}// end for
+		printf("= %lf\n", num[countNum]);
+		countNum++;
+	}// end while
+}// end main
