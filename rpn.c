@@ -50,6 +50,7 @@ int main(void){
 					break;
 				default:
 					if('0' <= buff[i] && buff[i] <= '9'){
+						// ((buff[i]) - ('0')) --- atoi
 						num[countNum] = num[countNum] * 10.0 + ((buff[i]) - ('0'));
 						//printf("%lf\n", num[countNum]);
 					}
